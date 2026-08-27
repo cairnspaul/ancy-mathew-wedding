@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <link rel="canonical" href="https://ancy-mathew-wedding.vercel.app/" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#171412" />
   <meta name="description" content="Ancy Roy & Mathew Oommen invite you to celebrate their wedding." />
-  <!-- Replace the image URL below with your hosted 1200 × 630 wedding photo before sharing on WhatsApp. -->
+  <!-- Replace the temporary image below with /wedding-preview.jpg once your 1200 × 630 couple photo is uploaded. -->
+  <link rel="canonical" href="https://www.ancyandmathew.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ancy-mathew-wedding.vercel.app/" />
+  <meta property="og:url" content="https://www.ancyandmathew.com/" />
   <meta property="og:title" content="Ancy Roy & Mathew Oommen — Wedding Invitation" />
   <meta property="og:description" content="Join us as we begin our forever. 08 October 2026." />
-  <meta property="og:image" content="https://ancy-mathew-wedding.vercel.app/wedding-preview.jpg?v=3" />
-  <meta property="og:image:secure_url" content="https://ancy-mathew-wedding.vercel.app/wedding-preview.jpg?v=3" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&h=630&q=85" />
+  <meta property="og:image:secure_url" content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&h=630&q=85" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -23,6 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .rsvp{min-height:auto;background:linear-gradient(165deg,#f8f2e6,#e9dfcf);padding-top:94px;padding-bottom:94px}.rsvp h3{font:500 clamp(42px,12vw,58px)/.88 var(--serif);letter-spacing:-.04em;margin:19px 0 14px}.rsvp-intro{font:500 20px/1.2 var(--serif);max-width:330px;margin:0 0 27px}.rsvp-card{width:min(100%,420px);text-align:left;border:1px solid #cfb67e;background:rgba(255,252,246,.64);padding:23px;box-shadow:0 15px 45px rgba(89,61,27,.09)}.rsvp-choices{display:grid;gap:10px}.rsvp-choice,.rsvp-submit{border:1px solid #a9884e;background:transparent;color:#292018;padding:15px 13px;font:600 10px var(--sans);letter-spacing:.13em;text-align:left;text-transform:uppercase;cursor:pointer;transition:.2s}.rsvp-choice:hover,.rsvp-choice:focus,.rsvp-submit{background:#292018;color:#f9edd0}.rsvp-form{display:grid;gap:16px}.rsvp-form[hidden],.rsvp-choices[hidden],.rsvp-attending-fields[hidden],.rsvp-feedback[hidden]{display:none}.rsvp-form label{display:grid;gap:7px;color:#675747;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}.rsvp-form input,.rsvp-form select{appearance:none;width:100%;border:0;border-bottom:1px solid #bca98a;border-radius:0;background:transparent;padding:9px 1px;color:#292018;font:500 17px var(--serif);outline:none}.rsvp-form select{font-size:16px}.rsvp-submit{text-align:center;width:100%;margin-top:4px}.rsvp-note{color:#8b7966;font-size:10px;letter-spacing:.04em;line-height:1.5;margin:1px 0 0}.rsvp-feedback{font:500 24px/1.15 var(--serif);margin:12px 0 2px}.rsvp-feedback a{color:#80602a;text-decoration-color:#c09b57;text-underline-offset:4px}.rsvp-back{border:0;background:transparent;color:#80602a;font:600 9px var(--sans);letter-spacing:.13em;text-transform:uppercase;padding:16px 0 0;cursor:pointer}
+  </style>
 </head>
 <body>
   <main id="invitation" aria-live="polite">
@@ -73,6 +76,30 @@
         <p class="venue-place" id="venuePlace">Nalanchira</p>
         <p class="venue-time">08 October 2026 · 10:30 AM</p>
         <a id="mapLink" class="map-button" href="https://www.google.com/maps/search/?api=1&query=Girideepam+Convention+Centre+Nalanchira" target="_blank" rel="noopener">View location <span>↗</span></a>
+      </section>
+      <section class="rsvp section" id="rsvp">
+        <p class="eyebrow">RSVP</p>
+        <h3>Will you join<br>our celebration?</h3>
+        <p class="rsvp-intro">Your presence would make our day even more special.</p>
+        <div class="rsvp-card">
+          <div class="rsvp-choices" id="rsvpChoices">
+            <button class="rsvp-choice" type="button" data-attendance="Joyfully attending">Joyfully, I’ll be there <span>↗</span></button>
+            <button class="rsvp-choice" type="button" data-attendance="Regretfully unable to attend">With love, I’m unable to attend <span>↗</span></button>
+          </div>
+          <form class="rsvp-form" id="rsvpForm" hidden>
+            <input type="hidden" name="attendance" id="attendance" />
+            <label>Your name<input name="guestName" autocomplete="name" required placeholder="Your full name" /></label>
+            <div class="rsvp-attending-fields" id="attendingFields">
+              <label>Guests attending<input name="guestCount" type="number" min="1" inputmode="numeric" placeholder="1" /></label>
+              <label>Food preference<select name="meal"><option value="">Choose one</option><option>Vegetarian</option><option>Non-vegetarian</option></select></label>
+            </div>
+            <label>Optional message<input name="message" placeholder="A note for the couple" /></label>
+            <button class="rsvp-submit" type="submit">Send RSVP <span>✦</span></button>
+            <p class="rsvp-note">Your response is sent privately to Ancy &amp; Mathew.</p>
+          </form>
+          <div class="rsvp-feedback" id="rsvpFeedback" hidden></div>
+          <button class="rsvp-back" id="rsvpBack" type="button" hidden>Change my response</button>
+        </div>
       </section>
       <footer>Made with love for our favourite people <span>♡</span></footer>
     </div>

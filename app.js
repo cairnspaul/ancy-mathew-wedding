@@ -9,7 +9,9 @@ const WEDDING = {
   coverPhoto: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1400&q=85',
   venuePhoto: 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1000&q=85',
   // Keep this music file beside index.html if you later replace it.
-  musicUrl: 'innimangalyam.mpeg'
+  musicUrl: 'innimangalyam.mpeg',
+  // Paste your Google Apps Script Web App URL here after completing RSVP_SETUP.md.
+  rsvpEndpoint: ''
 };
 
 const $ = id => document.getElementById(id);
@@ -66,3 +68,27 @@ canvas.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
   if(type==='pointerdown'||type==='pointermove'){e.preventDefault();scratch(e)}
 },{passive:false}));
 function petals(){for(let i=0;i<28;i++){const p=document.createElement('i');p.className='petal';p.style.left=(25+Math.random()*50)+'vw';p.style.top=(20+Math.random()*25)+'vh';p.style.setProperty('--x',(-180+Math.random()*360)+'px');p.style.animationDelay=(Math.random()*.55)+'s';document.body.append(p);setTimeout(()=>p.remove(),3500)}}
+
+// RSVP: submit private responses to the Google Apps Script endpoint configured above.
+const rsvpForm=$('rsvpForm'),rsvpChoices=$('rsvpChoices'),attendingFields=$('attendingFields'),rsvpFeedback=$('rsvpFeedback'),rsvpBack=$('rsvpBack');
+document.querySelectorAll('[data-attendance]').forEach(button=>button.addEventListener('click',()=>{
+  const attending=button.dataset.attendance==='Joyfully attending';
+  $('attendance').value=button.dataset.attendance;rsvpChoices.hidden=true;rsvpForm.hidden=false;attendingFields.hidden=!attending;
+  rsvpForm.elements.guestCount.required=attending;rsvpForm.elements.meal.required=attending;
+  if(!attending){rsvpForm.elements.guestCount.value='';rsvpForm.elements.meal.value=''}
+  rsvpForm.elements.guestName.focus();
+}));
+rsvpForm.addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(!WEDDING.rsvpEndpoint){alert('The RSVP is being prepared. Please try again shortly.');return}
+  const submitButton=rsvpForm.querySelector('[type="submit"]');submitButton.disabled=true;submitButton.textContent='Sending…';
+  const response=Object.fromEntries(new FormData(rsvpForm));response.submittedAt=new Date().toISOString();
+  try{
+    // no-cors avoids a browser preflight request to Google Apps Script; the script still receives the JSON body.
+    await fetch(WEDDING.rsvpEndpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(response)});
+    rsvpForm.hidden=true;rsvpFeedback.hidden=false;rsvpBack.hidden=false;
+    const joined=response.attendance==='Joyfully attending';
+    rsvpFeedback.innerHTML=joined?'Thank you — we cannot wait to celebrate with you. <a href="'+WEDDING.mapUrl+'" target="_blank" rel="noopener">Get directions ↗</a>':'Thank you for your love and blessings. You will be in our hearts on this special day.';
+  }catch(error){submitButton.disabled=false;submitButton.textContent='Send RSVP ✦';alert('Your RSVP could not be sent. Please check your connection and try again.');}
+});
+rsvpBack.addEventListener('click',()=>{rsvpFeedback.hidden=true;rsvpBack.hidden=true;rsvpForm.reset();rsvpForm.hidden=true;rsvpChoices.hidden=false;attendingFields.hidden=false;});
