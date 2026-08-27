@@ -57,5 +57,12 @@ function resizeCanvas(){
 function scratch(e){if(!drawing||revealed||!scratchReady)return;const r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;ctx.globalCompositeOperation='destination-out';ctx.beginPath();ctx.arc(p.clientX-r.left,p.clientY-r.top,27,0,Math.PI*2);ctx.fill();checkReveal()}
 function checkReveal(){const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;let transparent=0;for(let i=3;i<pixels.length;i+=64)if(pixels[i]<30)transparent++;if(transparent/(pixels.length/64)>.37)reveal()}
 function reveal(){if(revealed)return;revealed=true;card.classList.add('revealed');canvas.style.transition='opacity .65s';canvas.style.opacity='0';setTimeout(()=>canvas.style.pointerEvents='none',650);petals()}
-['pointerdown','pointermove','pointerup','pointercancel'].forEach(type=>canvas.addEventListener(type,e=>{if(type==='pointerdown'){drawing=true;canvas.setPointerCapture?.(e.pointerId)}if(type==='pointerup'||type==='pointercancel')drawing=false;if(type==='pointerdown'||type==='pointermove')scratch(e)}));
+// Prevent mobile browsers from turning a scratch gesture into page scrolling.
+canvas.style.touchAction='none';
+canvas.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+['pointerdown','pointermove','pointerup','pointercancel'].forEach(type=>canvas.addEventListener(type,e=>{
+  if(type==='pointerdown'){drawing=true;canvas.setPointerCapture?.(e.pointerId)}
+  if(type==='pointerup'||type==='pointercancel')drawing=false;
+  if(type==='pointerdown'||type==='pointermove'){e.preventDefault();scratch(e)}
+},{passive:false}));
 function petals(){for(let i=0;i<28;i++){const p=document.createElement('i');p.className='petal';p.style.left=(25+Math.random()*50)+'vw';p.style.top=(20+Math.random()*25)+'vh';p.style.setProperty('--x',(-180+Math.random()*360)+'px');p.style.animationDelay=(Math.random()*.55)+'s';document.body.append(p);setTimeout(()=>p.remove(),3500)}}
