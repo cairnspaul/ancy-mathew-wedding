@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#171412" />
+  <meta name="description" content="Ancy Roy & Mathew Oommen invite you to celebrate their wedding." />
+  <!-- Replace the image URL below with your hosted 1200 × 630 wedding photo before sharing on WhatsApp. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ancy Roy & Mathew Oommen — Wedding Invitation" />
+  <meta property="og:description" content="Join us as we begin our forever. 08 October 2026." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&h=630&q=85" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>Ancy & Mathew | Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="invitation" aria-live="polite">
+    <section class="cover" id="cover" aria-label="Wedding invitation cover">
+      <div class="cover-photo"></div><div class="veil"></div>
+      <div class="cover-content">
+        <p class="eyebrow">Together with their families</p>
+        <p class="monogram">A <span>&</span> M</p>
+        <h1><span id="coverBride">Ancy Roy</span><em>&</em><span id="coverGroom">Mathew Oommen</span></h1>
+        <p class="cover-date" id="coverDate">08 · 10 · 2026</p>
+        <button class="open-button" id="openInvite" type="button"><span>Tap to open</span><i aria-hidden="true">↓</i></button>
+      </div>
+    </section>
+
+    <div id="experience" hidden>
+      <audio id="music" loop preload="none"></audio>
+      <button class="sound-toggle" id="soundToggle" type="button" aria-label="Play background music"><span>♪</span><small>Sound</small></button>
+      <section class="hero section">
+        <div class="gold-line"></div>
+        <p class="eyebrow">A celebration of love</p>
+        <p class="prelude">With joyful hearts, we invite you to witness the beginning of our beautiful forever.</p>
+        <h2><span id="brideName">Ancy Roy</span><i>&</i><span id="groomName">Mathew Oommen</span></h2>
+        <p class="scroll-cue">Scroll to unfold <span>↓</span></p>
+      </section>
+
+      <section class="scratch-section section" id="date">
+        <p class="eyebrow">Save the date</p>
+        <div class="scratch-card" id="scratchCard">
+          <div class="date-reveal">
+            <p>Thursday</p><strong id="day">08</strong><p class="month-year" id="monthYear">October · 2026</p>
+            <span class="date-time" id="time">10:30 AM</span>
+          </div>
+          <canvas id="scratchCanvas" aria-label="Scratch here to reveal the wedding date"></canvas>
+          <div class="scratch-hint" id="scratchHint">Scratch to reveal <b>✦</b></div>
+        </div>
+      </section>
+
+      <section class="countdown section">
+        <p class="eyebrow">Counting down to forever</p>
+        <div class="clock" aria-label="Countdown to the wedding">
+          <div><b id="days">000</b><span>Days</span></div><div><b id="hours">00</b><span>Hours</span></div><div><b id="minutes">00</b><span>Minutes</span></div><div><b id="seconds">00</b><span>Seconds</span></div>
+        </div>
+      </section>
+
+      <section class="venue section" id="venue">
+        <div class="floral-mark">✦</div><p class="eyebrow">Where our story begins</p>
+        <h3 id="venueName">Girideepam<br>Convention Centre</h3>
+        <p class="venue-place" id="venuePlace">Nalanchira</p>
+        <p class="venue-time">08 October 2026 · 10:30 AM</p>
+        <a id="mapLink" class="map-button" href="https://www.google.com/maps/search/?api=1&query=Girideepam+Convention+Centre+Nalanchira" target="_blank" rel="noopener">View location <span>↗</span></a>
+      </section>
+      <footer>Made with love for our favourite people <span>♡</span></footer>
+    </div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
