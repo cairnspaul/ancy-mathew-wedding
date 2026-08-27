@@ -11,7 +11,7 @@ const WEDDING = {
   // Keep this music file beside index.html if you later replace it.
   musicUrl: 'innimangalyam.mpeg',
   // Paste your Google Apps Script Web App URL here after completing RSVP_SETUP.md.
-  rsvpEndpoint: ''
+  rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbxA8DJYwYTaQxY1EFOzfyaFJZ9iW0w3nJPBwxKe3vYVAsjdn6akCeHPo0ny_tjaB-yL/exec'
 };
 
 const $ = id => document.getElementById(id);
