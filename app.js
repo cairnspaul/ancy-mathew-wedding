@@ -8,6 +8,7 @@ const WEDDING = {
   mapUrl: 'https://www.google.com/maps/search/?api=1&query=Girideepam+Convention+Centre+Nalanchira',
   coverPhoto: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1400&q=85',
   venuePhoto: 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1000&q=85',
+  heroPhoto: 'ancymathew.jpg',
   // Keep this music file beside index.html if you later replace it.
   musicUrl: 'innimangalyam.mpeg',
   // Paste your Google Apps Script Web App URL here after completing RSVP_SETUP.md.
@@ -20,6 +21,11 @@ function applyDetails(){
   $('mapLink').href=WEDDING.mapUrl; $('music').src=WEDDING.musicUrl;
   document.querySelector('.cover-photo').style.backgroundImage=`linear-gradient(180deg,rgba(14,10,8,.22),rgba(14,10,8,.75)),url("${WEDDING.coverPhoto}")`;
   document.querySelector('.venue').style.backgroundImage=`linear-gradient(rgba(21,17,14,.88),rgba(21,17,14,.92)),url("${WEDDING.venuePhoto}")`;
+  document.querySelector('.hero').style.backgroundImage =
+  `linear-gradient(rgba(247,241,231,.82), rgba(247,241,231,.82)), url("${WEDDING.heroPhoto}")`;
+
+  document.querySelector('.hero').style.backgroundSize = 'cover';
+  document.querySelector('.hero').style.backgroundPosition = 'center';
 }
 applyDetails();
 
