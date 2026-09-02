@@ -75,26 +75,716 @@ canvas.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
 },{passive:false}));
 function petals(){for(let i=0;i<28;i++){const p=document.createElement('i');p.className='petal';p.style.left=(25+Math.random()*50)+'vw';p.style.top=(20+Math.random()*25)+'vh';p.style.setProperty('--x',(-180+Math.random()*360)+'px');p.style.animationDelay=(Math.random()*.55)+'s';document.body.append(p);setTimeout(()=>p.remove(),3500)}}
 
-// RSVP: submit private responses to the Google Apps Script endpoint configured above.
-const rsvpForm=$('rsvpForm'),rsvpChoices=$('rsvpChoices'),attendingFields=$('attendingFields'),rsvpFeedback=$('rsvpFeedback'),rsvpBack=$('rsvpBack');
-document.querySelectorAll('[data-attendance]').forEach(button=>button.addEventListener('click',()=>{
-  const attending=button.dataset.attendance==='Joyfully attending';
-  $('attendance').value=button.dataset.attendance;rsvpChoices.hidden=true;rsvpForm.hidden=false;attendingFields.hidden=!attending;
-  rsvpForm.elements.guestCount.required=attending;rsvpForm.elements.meal.required=attending;
-  if(!attending){rsvpForm.elements.guestCount.value='';rsvpForm.elements.meal.value=''}
-  rsvpForm.elements.guestName.focus();
-}));
-rsvpForm.addEventListener('submit',async event=>{
-  event.preventDefault();
-  if(!WEDDING.rsvpEndpoint){alert('The RSVP is being prepared. Please try again shortly.');return}
-  const submitButton=rsvpForm.querySelector('[type="submit"]');submitButton.disabled=true;submitButton.textContent='Sending…';
-  const response=Object.fromEntries(new FormData(rsvpForm));response.submittedAt=new Date().toISOString();
-  try{
-    // no-cors avoids a browser preflight request to Google Apps Script; the script still receives the JSON body.
-    await fetch(WEDDING.rsvpEndpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(response)});
-    rsvpForm.hidden=true;rsvpFeedback.hidden=false;rsvpBack.hidden=false;
-    const joined=response.attendance==='Joyfully attending';
-    rsvpFeedback.innerHTML=joined?'Thank you — we cannot wait to celebrate with you. <a href="'+WEDDING.mapUrl+'" target="_blank" rel="noopener">Get directions ↗</a>':'Thank you for your love and blessings. You will be in our hearts on this special day.';
-  }catch(error){submitButton.disabled=false;submitButton.textContent='Send RSVP ✦';alert('Your RSVP could not be sent. Please check your connection and try again.');}
-});
-rsvpBack.addEventListener('click',()=>{rsvpFeedback.hidden=true;rsvpBack.hidden=true;rsvpForm.reset();rsvpForm.hidden=true;rsvpChoices.hidden=false;attendingFields.hidden=false;});
+/// =====================================================
+// RSVP SYSTEM
+// Mobile number is used to identify an existing RSVP.
+// =====================================================
+
+
+const mobileStep =
+  $('mobileStep');
+
+const mobileNumber =
+  $('mobileNumber');
+
+const checkMobile =
+  $('checkMobile');
+
+const rsvpForm =
+  $('rsvpForm');
+
+const rsvpChoices =
+  $('rsvpChoices');
+
+const attendingFields =
+  $('attendingFields');
+
+const rsvpFeedback =
+  $('rsvpFeedback');
+
+const rsvpBack =
+  $('rsvpBack');
+
+const rsvpExisting =
+  $('rsvpExisting');
+
+const existingGuestName =
+  $('existingGuestName');
+
+const existingAttendance =
+  $('existingAttendance');
+
+const existingDetails =
+  $('existingDetails');
+
+const changeResponse =
+  $('changeResponse');
+
+
+let currentMobile = '';
+
+let existingResponse = null;
+
+
+
+// =====================================================
+// NORMALIZE MOBILE NUMBER
+// =====================================================
+
+function normalizeMobile(phone){
+
+  let digits =
+    String(phone || '')
+      .replace(/\D/g,'');
+
+
+  if(
+    digits.startsWith('91') &&
+    digits.length === 12
+  ){
+
+    digits =
+      digits.substring(2);
+
+  }
+
+
+  if(
+    digits.startsWith('0') &&
+    digits.length === 11
+  ){
+
+    digits =
+      digits.substring(1);
+
+  }
+
+
+  return digits;
+
+}
+
+
+
+// =====================================================
+// ERROR MESSAGE
+// =====================================================
+
+function showRsvpError(message){
+
+  let error =
+    document.getElementById(
+      'rsvpError'
+    );
+
+
+  if(!error){
+
+    error =
+      document.createElement('p');
+
+    error.id =
+      'rsvpError';
+
+    error.className =
+      'rsvp-error';
+
+    mobileStep
+      .querySelector('.rsvp-form')
+      .appendChild(error);
+
+  }
+
+
+  error.textContent =
+    message;
+
+}
+
+
+
+// =====================================================
+// CLEAR ERROR
+// =====================================================
+
+function clearRsvpError(){
+
+  const error =
+    document.getElementById(
+      'rsvpError'
+    );
+
+  if(error){
+    error.remove();
+  }
+
+}
+
+
+
+// =====================================================
+// SHOW NEW RSVP OPTIONS
+// =====================================================
+
+function showNewRsvp(){
+
+  mobileStep.hidden =
+    true;
+
+  rsvpExisting.hidden =
+    true;
+
+  rsvpChoices.hidden =
+    false;
+
+  rsvpForm.hidden =
+    true;
+
+  rsvpFeedback.hidden =
+    true;
+
+  rsvpBack.hidden =
+    true;
+
+}
+
+
+
+// =====================================================
+// SHOW RSVP FORM
+// =====================================================
+
+function showRsvpForm(attendance){
+
+  const attending =
+    attendance ===
+    'Joyfully attending';
+
+
+  $('attendance').value =
+    attendance;
+
+
+  rsvpChoices.hidden =
+    true;
+
+  rsvpExisting.hidden =
+    true;
+
+  rsvpForm.hidden =
+    false;
+
+  rsvpFeedback.hidden =
+    true;
+
+  rsvpBack.hidden =
+    true;
+
+
+  attendingFields.hidden =
+    !attending;
+
+
+  rsvpForm
+    .elements
+    .guestCount
+    .required =
+    attending;
+
+
+  rsvpForm
+    .elements
+    .meal
+    .required =
+    attending;
+
+
+  // Fill old information when changing response
+  if(existingResponse){
+
+    rsvpForm
+      .elements
+      .guestName
+      .value =
+      existingResponse.guestName || '';
+
+
+    rsvpForm
+      .elements
+      .guestCount
+      .value =
+      existingResponse.guestCount || '';
+
+
+    rsvpForm
+      .elements
+      .meal
+      .value =
+      existingResponse.meal || '';
+
+
+    rsvpForm
+      .elements
+      .message
+      .value =
+      existingResponse.message || '';
+
+  }
+
+
+  rsvpForm
+    .elements
+    .guestName
+    .focus();
+
+}
+
+
+
+// =====================================================
+// CHECK MOBILE NUMBER
+// =====================================================
+
+checkMobile.addEventListener(
+  'click',
+  async () => {
+
+    clearRsvpError();
+
+
+    const mobile =
+      normalizeMobile(
+        mobileNumber.value
+      );
+
+
+    if(mobile.length !== 10){
+
+      showRsvpError(
+        'Please enter a valid 10-digit mobile number.'
+      );
+
+      mobileNumber.focus();
+
+      return;
+
+    }
+
+
+    currentMobile =
+      mobile;
+
+
+    checkMobile.disabled =
+      true;
+
+    checkMobile.textContent =
+      'Checking…';
+
+
+    try{
+
+      const url =
+        WEDDING.rsvpEndpoint +
+        '?mobile=' +
+        encodeURIComponent(
+          currentMobile
+        );
+
+
+      const response =
+        await fetch(url);
+
+
+      const data =
+        await response.json();
+
+
+      if(data.found){
+
+        existingResponse =
+          data.response;
+
+
+        showExistingRsvp(
+          data.response
+        );
+
+      }
+
+      else{
+
+        existingResponse =
+          null;
+
+        showNewRsvp();
+
+      }
+
+
+    }
+
+    catch(error){
+
+      console.error(
+        'RSVP check failed:',
+        error
+      );
+
+
+      showRsvpError(
+        'Unable to check your RSVP. Please check your internet connection and try again.'
+      );
+
+    }
+
+
+    finally{
+
+      checkMobile.disabled =
+        false;
+
+      checkMobile.textContent =
+        'Continue →';
+
+    }
+
+  }
+);
+
+
+
+// =====================================================
+// SHOW EXISTING RSVP
+// =====================================================
+
+function showExistingRsvp(response){
+
+  mobileStep.hidden =
+    true;
+
+  rsvpChoices.hidden =
+    true;
+
+  rsvpForm.hidden =
+    true;
+
+  rsvpFeedback.hidden =
+    true;
+
+  rsvpBack.hidden =
+    true;
+
+  rsvpExisting.hidden =
+    false;
+
+
+  existingGuestName.textContent =
+    response.guestName ||
+    'Guest';
+
+
+  existingAttendance.textContent =
+    response.attendance ||
+    '';
+
+
+  let details = '';
+
+
+  if(
+    response.attendance ===
+    'Joyfully attending'
+  ){
+
+    if(response.guestCount){
+
+      details +=
+        response.guestCount +
+        ' guest' +
+        (
+          Number(
+            response.guestCount
+          ) === 1
+            ? ''
+            : 's'
+        );
+
+    }
+
+
+    if(response.meal){
+
+      if(details){
+        details += ' · ';
+      }
+
+      details +=
+        response.meal;
+
+    }
+
+  }
+
+
+  if(response.message){
+
+    if(details){
+      details += '<br>';
+    }
+
+    details +=
+      '“' +
+      escapeHtml(
+        response.message
+      ) +
+      '”';
+
+  }
+
+
+  existingDetails.innerHTML =
+    details;
+
+}
+
+
+
+// =====================================================
+// CHANGE EXISTING RESPONSE
+// =====================================================
+
+changeResponse.addEventListener(
+  'click',
+  () => {
+
+    if(!existingResponse){
+      return;
+    }
+
+
+    showRsvpForm(
+      existingResponse.attendance
+    );
+
+  }
+);
+
+
+
+// =====================================================
+// ATTENDANCE BUTTONS
+// =====================================================
+
+document
+  .querySelectorAll(
+    '[data-attendance]'
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      'click',
+      () => {
+
+        showRsvpForm(
+          button.dataset.attendance
+        );
+
+      }
+    );
+
+  });
+
+
+
+// =====================================================
+// SUBMIT RSVP
+// =====================================================
+
+rsvpForm.addEventListener(
+  'submit',
+  async event => {
+
+    event.preventDefault();
+
+
+    if(!currentMobile){
+
+      alert(
+        'Please enter your mobile number first.'
+      );
+
+      return;
+
+    }
+
+
+    const submitButton =
+      rsvpForm.querySelector(
+        '[type="submit"]'
+      );
+
+
+    submitButton.disabled =
+      true;
+
+
+    submitButton.textContent =
+      existingResponse
+        ? 'Updating…'
+        : 'Sending…';
+
+
+    const response =
+      Object.fromEntries(
+        new FormData(rsvpForm)
+      );
+
+
+    response.mobile =
+      currentMobile;
+
+
+    response.submittedAt =
+      new Date().toISOString();
+
+
+    try{
+
+      await fetch(
+        WEDDING.rsvpEndpoint,
+        {
+
+          method:'POST',
+
+          mode:'no-cors',
+
+          headers:{
+            'Content-Type':
+              'text/plain;charset=utf-8'
+          },
+
+          body:
+            JSON.stringify(
+              response
+            )
+
+        }
+      );
+
+
+      existingResponse =
+        response;
+
+
+      rsvpForm.hidden =
+        true;
+
+      rsvpChoices.hidden =
+        true;
+
+      rsvpExisting.hidden =
+        true;
+
+      rsvpFeedback.hidden =
+        false;
+
+      rsvpBack.hidden =
+        false;
+
+
+      if(
+        response.attendance ===
+        'Joyfully attending'
+      ){
+
+        rsvpFeedback.innerHTML =
+          'Thank you — we cannot wait to celebrate with you. ' +
+          '<a href="' +
+          WEDDING.mapUrl +
+          '" target="_blank" rel="noopener">' +
+          'Get directions ↗</a>';
+
+      }
+
+      else{
+
+        rsvpFeedback.innerHTML =
+          'Thank you for your love and blessings. ' +
+          'You will be in our hearts on this special day.';
+
+      }
+
+
+    }
+
+    catch(error){
+
+      console.error(
+        'RSVP submission failed:',
+        error
+      );
+
+
+      submitButton.disabled =
+        false;
+
+
+      submitButton.textContent =
+        existingResponse
+          ? 'Update RSVP ✦'
+          : 'Send RSVP ✦';
+
+
+      alert(
+        'Your RSVP could not be sent. Please check your connection and try again.'
+      );
+
+    }
+
+  }
+);
+
+
+
+// =====================================================
+// CHANGE RESPONSE AFTER SUBMISSION
+// =====================================================
+
+rsvpBack.addEventListener(
+  'click',
+  () => {
+
+    if(!existingResponse){
+      return;
+    }
+
+
+    showRsvpForm(
+      existingResponse.attendance
+    );
+
+  }
+);
+
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHtml(text){
+
+  const div =
+    document.createElement(
+      'div'
+    );
+
+
+  div.textContent =
+    text || '';
+
+
+  return div.innerHTML;
+
+}
