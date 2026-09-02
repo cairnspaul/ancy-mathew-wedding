@@ -25,7 +25,7 @@ function applyDetails(){
   `linear-gradient(rgba(240,234,224,.75), rgba(240,234,224,.75)), url("${WEDDING.heroPhoto}")`;
 
   document.querySelector('.hero').style.backgroundSize = 'cover';
-  document.querySelector('.hero').style.backgroundPosition = '10% 20%';
+  document.querySelector('.hero').style.backgroundPosition = '80% 20%';
 }
 applyDetails();
 
