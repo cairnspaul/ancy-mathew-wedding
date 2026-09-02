@@ -753,7 +753,7 @@ function escapeHtml(text){
 
   return div.innerHTML;
 
-}'
+}
 };
 
 const $ = id => document.getElementById(id);
@@ -1443,6 +1443,15 @@ rsvpBack.addEventListener(
 
   }
 );
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
 
 
 
