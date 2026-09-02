@@ -415,6 +415,8 @@ checkMobile.addEventListener('click', function () {
     encodeURIComponent(callbackName) +
     '&t=' +
     Date.now();
+  
+  console.log('RSVP URL:', script.src);
 
   script.onerror = function () {
 
