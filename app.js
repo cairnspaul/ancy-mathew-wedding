@@ -15,17 +15,48 @@ const WEDDING = {
 };
 
 const $ = id => document.getElementById(id);
-function applyDetails(){
-  [['coverBride',WEDDING.bride],['coverGroom',WEDDING.groom],['brideName',WEDDING.bride],['groomName',WEDDING.groom],['coverDate',WEDDING.displayDate],['day',WEDDING.day],['monthYear',WEDDING.monthYear],['time',WEDDING.time],['venueName',WEDDING.venue],['venuePlace',WEDDING.place]].forEach(([id,value])=>$(id).innerHTML=value);
-  $('mapLink').href=WEDDING.mapUrl; $('music').src=WEDDING.musicUrl;
-  document.querySelector('.cover-photo').style.backgroundImage=`linear-gradient(180deg,rgba(14,10,8,.22),rgba(14,10,8,.75)),url("${WEDDING.coverPhoto}")`;
-  document.querySelector('.venue').style.backgroundImage=`linear-gradient(rgba(21,17,14,.88),rgba(21,17,14,.92)),url("${WEDDING.venuePhoto}")`;
+function applyDetails() {
+
+  document.getElementById('coverBride').innerHTML = WEDDING.bride;
+  document.getElementById('coverGroom').innerHTML = WEDDING.groom;
+
+  document.getElementById('brideName').innerHTML = WEDDING.bride;
+  document.getElementById('groomName').innerHTML = WEDDING.groom;
+
+  document.getElementById('coverDate').innerHTML = WEDDING.displayDate;
+
+  document.getElementById('day').innerHTML = WEDDING.day;
+  document.getElementById('monthYear').innerHTML = WEDDING.monthYear;
+  document.getElementById('time').innerHTML = WEDDING.time;
+
+  document.getElementById('venueName').innerHTML = WEDDING.venue;
+  document.getElementById('venuePlace').innerHTML = WEDDING.place;
+
+  document.getElementById('mapLink').href = WEDDING.mapUrl;
+
+  document.getElementById('music').src = WEDDING.musicUrl;
+
+  document.querySelector('.cover-photo').style.backgroundImage =
+    'linear-gradient(180deg, rgba(14,10,8,.22), rgba(14,10,8,.75)), url("' +
+    WEDDING.coverPhoto +
+    '")';
+
+  document.querySelector('.venue').style.backgroundImage =
+    'linear-gradient(rgba(21,17,14,.88), rgba(21,17,14,.92)), url("' +
+    WEDDING.venuePhoto +
+    '")';
+
   document.querySelector('.hero').style.backgroundImage =
-  `linear-gradient(rgba(220,213,217,.55), rgba(220,213,217,.55)), url("${WEDDING.heroPhoto}")`;
+    'linear-gradient(rgba(220,213,217,.55), rgba(220,213,217,.55)), url("' +
+    WEDDING.heroPhoto +
+    '")';
 
   document.querySelector('.hero').style.backgroundSize = 'cover';
+
   document.querySelector('.hero').style.backgroundPosition = '42% 20%';
 }
+
+applyDetails();
 applyDetails();
 
 $('openInvite').addEventListener('click',()=>{
