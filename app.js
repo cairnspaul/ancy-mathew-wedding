@@ -254,89 +254,56 @@ function showNewRsvp(){
 // SHOW RSVP FORM
 // =====================================================
 
-function showRsvpForm(attendance){
+function showRsvpForm(attendance) {
 
-  const attending =
-    attendance ===
-    'Joyfully attending';
+  const attending = attendance === 'Joyfully attending';
 
+  $('attendance').value = attendance;
 
-  $('attendance').value =
-    attendance;
+  rsvpChoices.hidden = true;
+  rsvpExisting.hidden = true;
+  rsvpForm.hidden = false;
+  rsvpFeedback.hidden = true;
+  rsvpBack.hidden = true;
 
+  attendingFields.hidden = !attending;
 
-  rsvpChoices.hidden =
-    true;
+  rsvpForm.elements.guestCount.required = attending;
+  rsvpForm.elements.meal.required = attending;
 
-  rsvpExisting.hidden =
-    true;
+  if (existingResponse) {
 
-  rsvpForm.hidden =
-    false;
-
-  rsvpFeedback.hidden =
-    true;
-
-  rsvpBack.hidden =
-    true;
-
-
-  attendingFields.hidden =
-    !attending;
-
-
-  rsvpForm
-    .elements
-    .guestCount
-    .required =
-    attending;
-
-
-  rsvpForm
-    .elements
-    .meal
-    .required =
-    attending;
-
-
-  // Fill old information when changing response
-  if(existingResponse){
-
-    rsvpForm
-      .elements
-      .guestName
-      .value =
+    rsvpForm.elements.guestName.value =
       existingResponse.guestName || '';
 
-
-    rsvpForm
-      .elements
-      .guestCount
-      .value =
-      existingResponse.guestCount || '';
-
-
-    rsvpForm
-      .elements
-      .meal
-      .value =
-      existingResponse.meal || '';
-
-
-    rsvpForm
-      .elements
-      .message
-      .value =
+    rsvpForm.elements.message.value =
       existingResponse.message || '';
+
+    if (attending) {
+
+      rsvpForm.elements.guestCount.value =
+        existingResponse.guestCount || '';
+
+      rsvpForm.elements.meal.value =
+        existingResponse.meal || '';
+
+    } else {
+
+      // Clear old attending information
+      rsvpForm.elements.guestCount.value = '';
+      rsvpForm.elements.meal.value = '';
+
+    }
+
+  } else {
+
+    rsvpForm.elements.guestCount.value = '';
+    rsvpForm.elements.meal.value = '';
+    rsvpForm.elements.message.value = '';
 
   }
 
-
-  rsvpForm
-    .elements
-    .guestName
-    .focus();
-
+  rsvpForm.elements.guestName.focus();
 }
 
 
