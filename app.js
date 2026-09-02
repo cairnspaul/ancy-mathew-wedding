@@ -22,7 +22,7 @@ function applyDetails(){
   document.querySelector('.cover-photo').style.backgroundImage=`linear-gradient(180deg,rgba(14,10,8,.22),rgba(14,10,8,.75)),url("${WEDDING.coverPhoto}")`;
   document.querySelector('.venue').style.backgroundImage=`linear-gradient(rgba(21,17,14,.88),rgba(21,17,14,.92)),url("${WEDDING.venuePhoto}")`;
   document.querySelector('.hero').style.backgroundImage =
-  `linear-gradient(rgba(240,234,224,.75), rgba(240,234,224,.75)), url("${WEDDING.heroPhoto}")`;
+  `linear-gradient(rgba(220,213,217,.55), rgba(220,213,217,.55)), url("${WEDDING.heroPhoto}")`;
 
   document.querySelector('.hero').style.backgroundSize = 'cover';
   document.querySelector('.hero').style.backgroundPosition = '42% 20%';
