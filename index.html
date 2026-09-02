@@ -82,24 +82,223 @@
         <h3>Will you join<br>our celebration?</h3>
         <p class="rsvp-intro">Your presence would make our day even more special.</p>
         <div class="rsvp-card">
-          <div class="rsvp-choices" id="rsvpChoices">
-            <button class="rsvp-choice" type="button" data-attendance="Joyfully attending">Joyfully, I’ll be there <span>↗</span></button>
-            <button class="rsvp-choice" type="button" data-attendance="Regretfully unable to attend">With love, I’m unable to attend <span>↗</span></button>
-          </div>
-          <form class="rsvp-form" id="rsvpForm" hidden>
-            <input type="hidden" name="attendance" id="attendance" />
-            <label>Your name<input name="guestName" autocomplete="name" required placeholder="Your full name" /></label>
-            <div class="rsvp-attending-fields" id="attendingFields">
-              <label>Guests attending<input name="guestCount" type="number" min="1" inputmode="numeric" placeholder="1" /></label>
-              <label>Food preference<select name="meal"><option value="">Choose one</option><option>Vegetarian</option><option>Non-vegetarian</option></select></label>
-            </div>
-            <label>Optional message<input name="message" placeholder="A note for the couple" /></label>
-            <button class="rsvp-submit" type="submit">Send RSVP <span>✦</span></button>
-            <p class="rsvp-note">Your response is sent privately to Ancy &amp; Mathew.</p>
-          </form>
-          <div class="rsvp-feedback" id="rsvpFeedback" hidden></div>
-          <button class="rsvp-back" id="rsvpBack" type="button" hidden>Change my response</button>
-        </div>
+          <div class="rsvp-card">
+
+  <!-- MOBILE NUMBER STEP -->
+
+          <div id="mobileStep">
+
+          <div class="rsvp-form">
+
+      <label>
+        Mobile number
+
+        <input
+          id="mobileNumber"
+          name="mobile"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="tel"
+          maxlength="14"
+          placeholder="Enter your mobile number"
+        />
+
+      </label>
+
+      <button
+        class="rsvp-submit"
+        id="checkMobile"
+        type="button">
+
+        Continue <span>→</span>
+
+      </button>
+
+      <p class="rsvp-note">
+        Enter the mobile number you will use for your RSVP.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- EXISTING RSVP -->
+
+  <div
+    class="rsvp-existing"
+    id="rsvpExisting"
+    hidden>
+
+    <p class="rsvp-existing-label">
+      Your RSVP
+    </p>
+
+    <h4 id="existingGuestName"></h4>
+
+    <p id="existingAttendance"></p>
+
+    <p id="existingDetails"></p>
+
+    <button
+      class="rsvp-back"
+      id="changeResponse"
+      type="button">
+
+      Change my response
+
+    </button>
+
+  </div>
+
+
+  <!-- ATTENDANCE OPTIONS -->
+
+  <div
+    class="rsvp-choices"
+    id="rsvpChoices"
+    hidden>
+
+    <button
+      class="rsvp-choice"
+      type="button"
+      data-attendance="Joyfully attending">
+
+      Joyfully, I’ll be there
+      <span>↗</span>
+
+    </button>
+
+    <button
+      class="rsvp-choice"
+      type="button"
+      data-attendance="Regretfully unable to attend">
+
+      With love, I’m unable to attend
+      <span>↗</span>
+
+    </button>
+
+  </div>
+
+
+  <!-- RSVP FORM -->
+
+  <form
+    class="rsvp-form"
+    id="rsvpForm"
+    hidden>
+
+    <input
+      type="hidden"
+      name="attendance"
+      id="attendance"
+    />
+
+
+    <label>
+      Your name
+
+      <input
+        name="guestName"
+        autocomplete="name"
+        required
+        placeholder="Your full name"
+      />
+
+    </label>
+
+
+    <div
+      class="rsvp-attending-fields"
+      id="attendingFields">
+
+      <label>
+        Guests attending
+
+        <input
+          name="guestCount"
+          type="number"
+          min="1"
+          inputmode="numeric"
+          placeholder="1"
+        />
+
+      </label>
+
+
+      <label>
+        Food preference
+
+        <select name="meal">
+
+          <option value="">
+            Choose one
+          </option>
+
+          <option>
+            Vegetarian
+          </option>
+
+          <option>
+            Non-vegetarian
+          </option>
+
+        </select>
+
+      </label>
+
+    </div>
+
+
+    <label>
+      Optional message
+
+      <input
+        name="message"
+        placeholder="A note for the couple"
+      />
+
+    </label>
+
+
+    <button
+      class="rsvp-submit"
+      type="submit">
+
+      Send RSVP <span>✦</span>
+
+    </button>
+
+
+    <p class="rsvp-note">
+      Your response is sent privately to
+      Ancy &amp; Mathew.
+    </p>
+
+  </form>
+
+
+  <!-- SUCCESS MESSAGE -->
+
+  <div
+    class="rsvp-feedback"
+    id="rsvpFeedback"
+    hidden>
+  </div>
+
+
+  <button
+    class="rsvp-back"
+    id="rsvpBack"
+    type="button"
+    hidden>
+
+    Change my response
+
+  </button>
+
+</div>
       </section>
       <footer>Made with love for our favourite people <span>♡</span></footer>
     </div>
