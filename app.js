@@ -342,7 +342,7 @@ function showRsvpForm(attendance) {
 // CHECK MOBILE NUMBER
 // =====================================================
 
-checkMobile.addEventListener('click', function () {
+checkMobile.addEventListener('click', async function () {
 
   clearRsvpError();
 
@@ -359,102 +359,55 @@ checkMobile.addEventListener('click', function () {
   checkMobile.disabled = true;
   checkMobile.textContent = 'Checking…';
 
-  const callbackName =
-    'rsvpCallback_' + Date.now();
+  try {
 
-  let finished = false;
+    const url =
+      WEDDING.rsvpEndpoint +
+      '?mobile=' +
+      encodeURIComponent(currentMobile) +
+      '&t=' +
+      Date.now();
 
-  function cleanup() {
+    console.log('RSVP lookup URL:', url);
 
-    if (finished) return;
+    const response = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-store'
+    });
 
-    finished = true;
-
-    checkMobile.disabled = false;
-    checkMobile.textContent = 'Continue →';
-
-    delete window[callbackName];
-
-    const oldScript =
-      document.getElementById(callbackName);
-
-    if (oldScript) {
-      oldScript.remove();
+    if (!response.ok) {
+      throw new Error('Server returned HTTP ' + response.status);
     }
-  }
 
-  window[callbackName] = function (data) {
+    const data = await response.json();
 
-    cleanup();
+    console.log('RSVP response:', data);
 
     if (data && data.found) {
-
       existingResponse = data.response;
-
       showExistingRsvp(data.response);
-
     } else {
-
       existingResponse = null;
-
       showNewRsvp();
-
     }
-  };
 
-  const script =
-    document.createElement('script');
+  } catch (error) {
 
-  script.id = callbackName;
-
-  script.src =
-    WEDDING.rsvpEndpoint +
-    '?mobile=' +
-    encodeURIComponent(currentMobile) +
-    '&callback=' +
-    encodeURIComponent(callbackName) +
-    '&t=' +
-    Date.now();
-  
-  console.log('RSVP URL:', script.src);
-
-  script.onerror = function () {
-
-    cleanup();
+    console.error('RSVP lookup failed:', error);
 
     showRsvpError(
       'Unable to connect to the RSVP server. Please try again.'
     );
 
-    console.error(
-      'RSVP JSONP request failed:',
-      script.src
-    );
-  };
+  } finally {
 
-  document.head.appendChild(script);
+    checkMobile.disabled = false;
+    checkMobile.textContent = 'Continue →';
 
-  // Stop waiting after 15 seconds
-  setTimeout(function () {
-
-    if (!finished) {
-
-      cleanup();
-
-      showRsvpError(
-        'The RSVP server took too long to respond. Please try again.'
-      );
-
-      console.error(
-        'RSVP request timed out:',
-        script.src
-      );
-    }
-
-  }, 15000);
+  }
 
 });
-
 
 // =====================================================
 // SHOW EXISTING RSVP
