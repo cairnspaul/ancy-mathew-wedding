@@ -1,18 +1,3 @@
-/* ───────────────── EDIT YOUR INVITATION HERE ───────────────── */
-const WEDDING = {
-  bride: 'Ancy Roy', groom: 'Mathew Oommen',
-  // ISO local time avoids timezone changes on guests’ phones.
-  dateTime: '2026-10-08T10:30:00+05:30',
-  displayDate: '08 · 10 · 2026', day: '08', monthYear: 'October · 2026', time: '10:30 AM',
-  venue: 'Girideepam<br>Convention Centre', place: 'Nalanchira',
-  mapUrl: 'https://www.google.com/maps/search/?api=1&query=Girideepam+Convention+Centre+Nalanchira',
-  coverPhoto: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1400&q=85',
-  venuePhoto: 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1000&q=85',
-  heroPhoto: 'mathewancy.jpg',
-  // Keep this music file beside index.html if you later replace it.
-  musicUrl: 'innimangalyam.mp3',
-  // Paste your Google Apps Script Web App URL here after completing RSVP_SETUP.md.
-  rsvpEndpoint: '/* ───────────────── EDIT YOUR INVITATION HERE ───────────────── */
 const WEDDING = {
   bride: 'Ancy Roy', groom: 'Mathew Oommen',
   // ISO local time avoids timezone changes on guests’ phones.
