@@ -345,113 +345,82 @@ function showRsvpForm(attendance){
 // CHECK MOBILE NUMBER
 // =====================================================
 
-checkMobile.addEventListener(
-  'click',
-  async () => {
+checkMobile.addEventListener('click', () => {
+  clearRsvpError();
+
+  const mobile = normalizeMobile(mobileNumber.value);
+
+  if (mobile.length !== 10) {
+    showRsvpError('Please enter a valid 10-digit mobile number.');
+    mobileNumber.focus();
+    return;
+  }
+
+  currentMobile = mobile;
+
+  checkMobile.disabled = true;
+  checkMobile.textContent = 'Checking…';
+
+  const callbackName =
+    'rsvpCallback_' + Date.now();
+
+  window[callbackName] = function(data) {
+
+    try {
+
+      if (data.found) {
+        existingResponse = data.response;
+        showExistingRsvp(data.response);
+
+      } else {
+        existingResponse = null;
+        showNewRsvp();
+      }
+
+    } finally {
+
+      checkMobile.disabled = false;
+      checkMobile.textContent = 'Continue →';
+
+      delete window[callbackName];
+
+      const script = document.getElementById(callbackName);
+
+      if (script) {
+        script.remove();
+      }
+
+    }
+  };
+
+  const script = document.createElement('script');
+
+  script.id = callbackName;
+
+  script.src =
+    WEDDING.rsvpEndpoint +
+    '?mobile=' +
+    encodeURIComponent(currentMobile) +
+    '&callback=' +
+    encodeURIComponent(callbackName);
+
+  script.onerror = function() {
 
     clearRsvpError();
 
+    showRsvpError(
+      'Unable to check your RSVP. Please check your internet connection and try again.'
+    );
 
-    const mobile =
-      normalizeMobile(
-        mobileNumber.value
-      );
+    checkMobile.disabled = false;
+    checkMobile.textContent = 'Continue →';
 
+    delete window[callbackName];
+    script.remove();
+  };
 
-    if(mobile.length !== 10){
-
-      showRsvpError(
-        'Please enter a valid 10-digit mobile number.'
-      );
-
-      mobileNumber.focus();
-
-      return;
-
-    }
-
-
-    currentMobile =
-      mobile;
-
-
-    checkMobile.disabled =
-      true;
-
-    checkMobile.textContent =
-      'Checking…';
-
-
-    try{
-
-      const url =
-        WEDDING.rsvpEndpoint +
-        '?mobile=' +
-        encodeURIComponent(
-          currentMobile
-        );
-
-
-      const response =
-        await fetch(url);
-
-
-      const data =
-        await response.json();
-
-
-      if(data.found){
-
-        existingResponse =
-          data.response;
-
-
-        showExistingRsvp(
-          data.response
-        );
-
-      }
-
-      else{
-
-        existingResponse =
-          null;
-
-        showNewRsvp();
-
-      }
-
-
-    }
-
-    catch(error){
-
-      console.error(
-        'RSVP check failed:',
-        error
-      );
-
-
-      showRsvpError(
-        'Unable to check your RSVP. Please check your internet connection and try again.'
-      );
-
-    }
-
-
-    finally{
-
-      checkMobile.disabled =
-        false;
-
-      checkMobile.textContent =
-        'Continue →';
-
-    }
-
-  }
-);
-
+  document.body.appendChild(script);
+});
 
 
 // =====================================================
