@@ -385,11 +385,15 @@ checkMobile.addEventListener('click', async function () {
     console.log('RSVP response:', data);
 
     if (data && data.found) {
+
       existingResponse = data.response;
       showExistingRsvp(data.response);
+
     } else {
+
       existingResponse = null;
       showNewRsvp();
+
     }
 
   } catch (error) {
