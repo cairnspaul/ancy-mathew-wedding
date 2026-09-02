@@ -10,7 +10,7 @@ const WEDDING = {
   venuePhoto: 'https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1000&q=85',
   heroPhoto: 'ancymathew.jpg',
   // Keep this music file beside index.html if you later replace it.
-  musicUrl: 'innimangalyam.mpeg',
+  musicUrl: 'innimangalyam.mp3',
   // Paste your Google Apps Script Web App URL here after completing RSVP_SETUP.md.
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbxA8DJYwYTaQxY1EFOzfyaFJZ9iW0w3nJPBwxKe3vYVAsjdn6akCeHPo0ny_tjaB-yL/exec'
 };
