@@ -517,15 +517,21 @@ changeResponse.addEventListener(
   'click',
   () => {
 
-    if(!existingResponse){
+    if (!existingResponse) {
       return;
     }
 
+    // Hide existing RSVP
+    rsvpExisting.hidden = true;
 
-    showRsvpForm(
-      existingResponse.attendance
-    );
+    // Show attendance choices again
+    rsvpChoices.hidden = false;
 
+    // Hide the form until a new choice is made
+    rsvpForm.hidden = true;
+
+    rsvpFeedback.hidden = true;
+    rsvpBack.hidden = false;
   }
 );
 
